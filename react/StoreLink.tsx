@@ -106,13 +106,11 @@ function StoreLink(props: Props) {
       scrollOptions={scrollOptions}
       onClick={(e: MouseEvent) => { if (preventClickPropagate) { e.stopPropagation(); } }}
     >
-      { label && <span className={labelClasses}>{localizedLabel}</span>}
-      {
-        hasChildren(children) && (
-          <div className={handles.childrenContainer}>{children}</div>
-        )
-      }
-    </ Link >
+      {label && <span className={labelClasses}>{localizedLabel}</span>}
+      {hasChildren(children) && (
+        <div className={handles.childrenContainer}>{children}</div>
+      )}
+    </Link>
   )
 }
 
