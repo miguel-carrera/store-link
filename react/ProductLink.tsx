@@ -27,6 +27,7 @@ function ProductLink(props: Props) {
     children,
     target,
     displayMode = 'anchor',
+    preventClickPropagate = false,
     buttonProps = defaultButtonProps,
   } = props
   const productContext = useProduct()
@@ -67,6 +68,7 @@ function ProductLink(props: Props) {
       to={resolvedLink}
       className={rootClasses}
       replace={shouldReplaceUrl}
+      onClick={(e: MouseEvent) => { if (preventClickPropagate) { e.stopPropagation(); } }}
     >
       {label && <span className={labelClasses}>{label}</span>}
       {hasChildren(children) && displayMode === 'anchor' && (

@@ -25,7 +25,7 @@ type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<
 > &
   {
     [K in Keys]-?: Required<Pick<T, K>> &
-      Partial<Record<Exclude<Keys, K>, undefined>>
+    Partial<Record<Exclude<Keys, K>, undefined>>
   }[Keys]
 
 interface AllProps {
@@ -36,6 +36,7 @@ interface AllProps {
   children: React.ReactNode
   displayMode?: DisplayMode
   buttonProps?: Partial<ButtonProps>
+  preventClickPropagate?: boolean
 }
 
 export type Props = RequireOnlyOne<AllProps, 'label' | 'children'>
@@ -64,6 +65,7 @@ function StoreLink(props: Props) {
     buttonProps = defaultButtonProps,
     scrollTo,
     displayMode = 'anchor',
+    preventClickPropagate = false
   } = props
   const { variant, size } = {
     ...defaultButtonProps,
@@ -102,12 +104,15 @@ function StoreLink(props: Props) {
       className={rootClasses}
       replace={shouldReplaceUrl}
       scrollOptions={scrollOptions}
+      onClick={(e: MouseEvent) => { if (preventClickPropagate) { e.stopPropagation(); } }}
     >
-      {label && <span className={labelClasses}>{localizedLabel}</span>}
-      {hasChildren(children) && (
-        <div className={handles.childrenContainer}>{children}</div>
-      )}
-    </Link>
+      { label && <span className={labelClasses}>{localizedLabel}</span>}
+      {
+        hasChildren(children) && (
+          <div className={handles.childrenContainer}>{children}</div>
+        )
+      }
+    </ Link >
   )
 }
 
